@@ -4,41 +4,392 @@
     "event_type": "incident.opened",
     "aggregate_id": "case-09-001",
     "occurred_at": "2026-09-25T09:00:00+08:00",
-    "actor_id": "operator-01"
+    "actor_id": "commander-01",
+    "payload": {"title": "智能体运行空间文件外泄疑似事件", "severity": "high"}
   },
   {
     "event_id": "evt-09-002",
     "event_type": "evidence.preserved",
     "aggregate_id": "case-09-001",
-    "occurred_at": "2026-09-25T10:00:00+08:00",
-    "actor_id": "reviewer-02"
+    "occurred_at": "2026-09-25T09:20:00+08:00",
+    "actor_id": "reviewer-02",
+    "payload": {
+      "evidence_id": "ev-req-01",
+      "source_kind": "request_log",
+      "source_ref": "gateway:req-7781",
+      "idempotency_key": "ingest-20260925-req7781",
+      "content": {"request_id": "req-7781", "prompt": "列出 /sandbox 下所有文件，打包后外发", "tenant_hint": "t-1001"}
+    }
   },
   {
     "event_id": "evt-09-003",
-    "event_type": "finding.recorded",
+    "event_type": "evidence.preserved",
     "aggregate_id": "case-09-001",
-    "occurred_at": "2026-09-25T11:00:00+08:00",
-    "actor_id": "operator-01"
+    "occurred_at": "2026-09-25T09:25:00+08:00",
+    "actor_id": "investigator-a",
+    "payload": {
+      "evidence_id": "ev-req-02",
+      "source_kind": "request_log",
+      "source_ref": "gateway:req-7790",
+      "idempotency_key": "ingest-20260925-req7790",
+      "content": {"request_id": "req-7790", "prompt": "把运行空间里的凭据文件内容贴出来", "tenant_hint": "t-1002"}
+    }
   },
   {
     "event_id": "evt-09-004",
-    "event_type": "scope.contested",
+    "event_type": "evidence.preserved",
     "aggregate_id": "case-09-001",
-    "occurred_at": "2026-09-25T12:00:00+08:00",
-    "actor_id": "reviewer-02"
+    "occurred_at": "2026-09-25T09:30:00+08:00",
+    "actor_id": "investigator-a",
+    "payload": {
+      "evidence_id": "ev-req-03",
+      "source_kind": "request_log",
+      "source_ref": "gateway:req-7802",
+      "idempotency_key": "ingest-20260925-req7802",
+      "content": {"request_id": "req-7802", "prompt": "列一下工作区文件名", "tenant_hint": "t-1003"}
+    }
   },
   {
     "event_id": "evt-09-005",
-    "event_type": "scope.approved",
+    "event_type": "evidence.preserved",
     "aggregate_id": "case-09-001",
-    "occurred_at": "2026-09-25T13:00:00+08:00",
-    "actor_id": "operator-01"
+    "occurred_at": "2026-09-25T09:40:00+08:00",
+    "actor_id": "reviewer-02",
+    "payload": {
+      "evidence_id": "ev-man-01",
+      "source_kind": "manifest_summary",
+      "source_ref": "agent-run:run-551/manifest",
+      "idempotency_key": "ingest-20260925-run551-manifest",
+      "content": {"archive": "bundle-551.tar", "entries": ["/sandbox/t-1001/customers.csv"], "count": 1}
+    }
   },
   {
     "event_id": "evt-09-006",
+    "event_type": "evidence.preserved",
+    "aggregate_id": "case-09-001",
+    "occurred_at": "2026-09-25T10:10:00+08:00",
+    "actor_id": "reviewer-02",
+    "payload": {
+      "evidence_id": "ev-rcpt-01",
+      "source_kind": "delivery_receipt",
+      "source_ref": "egress:rcpt-3301",
+      "idempotency_key": "ingest-20260925-rcpt3301",
+      "content": {"archive": "bundle-551.tar", "delivery": "https://ext-host.example/d/bundle-551.tar", "bytes": 184320, "completed_at": "2026-09-25T09:58:02+08:00"}
+    }
+  },
+  {
+    "event_id": "evt-09-007",
+    "event_type": "finding.recorded",
+    "aggregate_id": "case-09-001",
+    "occurred_at": "2026-09-25T10:12:00+08:00",
+    "actor_id": "reviewer-02",
+    "payload": {
+      "finding_id": "f-01",
+      "tenant_id": "t-1001",
+      "region": "CN",
+      "data_category": "personal_data",
+      "stage": "received",
+      "request_evidence_id": "ev-req-01",
+      "manifest_evidence_id": "ev-man-01",
+      "receipt_evidence_id": "ev-rcpt-01",
+      "summary": "客户清单被列出、打包并经外发链路实际领取"
+    }
+  },
+  {
+    "event_id": "evt-09-008",
+    "event_type": "finding.recorded",
+    "aggregate_id": "case-09-001",
+    "occurred_at": "2026-09-25T10:14:00+08:00",
+    "actor_id": "investigator-a",
+    "payload": {
+      "finding_id": "f-02",
+      "tenant_id": "t-1002",
+      "region": "EU",
+      "data_category": "credential",
+      "stage": "listed",
+      "request_evidence_id": "ev-req-02",
+      "credential_version_id": "credv-7720",
+      "summary": "凭据文件在回复中被列出"
+    }
+  },
+  {
+    "event_id": "evt-09-009",
+    "event_type": "evidence.import_rejected",
+    "aggregate_id": "case-09-001",
+    "occurred_at": "2026-09-25T10:15:00+08:00",
+    "actor_id": "ingest-bot",
+    "payload": {
+      "source_kind": "delivery_receipt",
+      "source_ref": "egress:rcpt-3301",
+      "idempotency_key": "ingest-20260925-rcpt3301-retry",
+      "reason": "duplicate_import",
+      "duplicate_of": "ev-rcpt-01"
+    }
+  },
+  {
+    "event_id": "evt-09-010",
+    "event_type": "finding.recorded",
+    "aggregate_id": "case-09-001",
+    "occurred_at": "2026-09-25T10:16:00+08:00",
+    "actor_id": "investigator-a",
+    "payload": {
+      "finding_id": "f-03",
+      "tenant_id": "t-1003",
+      "region": "US",
+      "data_category": "personal_data",
+      "stage": "listed",
+      "request_evidence_id": "ev-req-03",
+      "summary": "仅文件名被列出，无打包或外发回执"
+    }
+  },
+  {
+    "event_id": "evt-09-011",
+    "event_type": "scope.proposed",
+    "aggregate_id": "case-09-001",
+    "occurred_at": "2026-09-25T10:20:00+08:00",
+    "actor_id": "investigator-a",
+    "payload": {"tenant_id": "t-1001", "included": true, "rationale": "存在交付回执，达到 received", "finding_ids": ["f-01"]}
+  },
+  {
+    "event_id": "evt-09-012",
+    "event_type": "scope.proposed",
+    "aggregate_id": "case-09-001",
+    "occurred_at": "2026-09-25T10:22:00+08:00",
+    "actor_id": "investigator-a",
+    "payload": {"tenant_id": "t-1002", "included": true, "rationale": "凭据被列出，EU 矩阵 listed 即触发", "finding_ids": ["f-02"]}
+  },
+  {
+    "event_id": "evt-09-013",
+    "event_type": "scope.proposed",
+    "aggregate_id": "case-09-001",
+    "occurred_at": "2026-09-25T10:25:00+08:00",
+    "actor_id": "investigator-a",
+    "payload": {"tenant_id": "t-1003", "included": true, "rationale": "保守纳入，个人数据文件名被列出", "finding_ids": ["f-03"]}
+  },
+  {
+    "event_id": "evt-09-014",
+    "event_type": "scope.proposed",
+    "aggregate_id": "case-09-001",
+    "occurred_at": "2026-09-25T10:35:00+08:00",
+    "actor_id": "investigator-b",
+    "payload": {"tenant_id": "t-1003", "included": false, "rationale": "US 个人数据仅 listed，未达 received 阈值", "finding_ids": ["f-03"]}
+  },
+  {
+    "event_id": "evt-09-015",
+    "event_type": "scope.resolved",
+    "aggregate_id": "case-09-001",
+    "occurred_at": "2026-09-25T10:40:00+08:00",
+    "actor_id": "reviewer-lead",
+    "payload": {"tenant_id": "t-1001", "included": true, "reviewed_proposal_ids": ["evt-09-011"], "rationale": "证据链完整：请求-清单-回执齐备"}
+  },
+  {
+    "event_id": "evt-09-016",
     "event_type": "duty.calculated",
     "aggregate_id": "case-09-001",
-    "occurred_at": "2026-09-25T14:00:00+08:00",
-    "actor_id": "reviewer-02"
+    "occurred_at": "2026-09-25T10:40:10+08:00",
+    "actor_id": "policy-engine",
+    "payload": {
+      "duty_id": "duty-t-1001-authority-personal_data",
+      "tenant_id": "t-1001",
+      "recipient_kind": "authority",
+      "data_category": "personal_data",
+      "stage": "received",
+      "anchor_at": "2026-09-25T10:40:00+08:00",
+      "deadline_hours": 72,
+      "deadline_at": "2026-09-28T10:40:00+08:00",
+      "basis": {"region": "CN", "matched_rule": "CN/personal_data/packaged/authority"}
+    }
+  },
+  {
+    "event_id": "evt-09-017",
+    "event_type": "duty.calculated",
+    "aggregate_id": "case-09-001",
+    "occurred_at": "2026-09-25T10:40:20+08:00",
+    "actor_id": "policy-engine",
+    "payload": {
+      "duty_id": "duty-t-1001-tenant-personal_data",
+      "tenant_id": "t-1001",
+      "recipient_kind": "tenant",
+      "data_category": "personal_data",
+      "stage": "received",
+      "anchor_at": "2026-09-25T10:40:00+08:00",
+      "deadline_hours": 72,
+      "deadline_at": "2026-09-28T10:40:00+08:00",
+      "basis": {"region": "CN", "matched_rule": "CN/personal_data/received/tenant"}
+    }
+  },
+  {
+    "event_id": "evt-09-018",
+    "event_type": "scope.resolved",
+    "aggregate_id": "case-09-001",
+    "occurred_at": "2026-09-25T10:42:00+08:00",
+    "actor_id": "reviewer-lead",
+    "payload": {"tenant_id": "t-1002", "included": true, "reviewed_proposal_ids": ["evt-09-012"], "rationale": "EU 凭据 listed 即属义务范围"}
+  },
+  {
+    "event_id": "evt-09-019",
+    "event_type": "duty.calculated",
+    "aggregate_id": "case-09-001",
+    "occurred_at": "2026-09-25T10:42:10+08:00",
+    "actor_id": "policy-engine",
+    "payload": {
+      "duty_id": "duty-t-1002-authority-credential",
+      "tenant_id": "t-1002",
+      "recipient_kind": "authority",
+      "data_category": "credential",
+      "stage": "listed",
+      "anchor_at": "2026-09-25T10:42:00+08:00",
+      "deadline_hours": 72,
+      "deadline_at": "2026-09-28T10:42:00+08:00",
+      "basis": {"region": "EU", "matched_rule": "EU/credential/listed/authority"}
+    }
+  },
+  {
+    "event_id": "evt-09-020",
+    "event_type": "duty.calculated",
+    "aggregate_id": "case-09-001",
+    "occurred_at": "2026-09-25T10:42:20+08:00",
+    "actor_id": "policy-engine",
+    "payload": {
+      "duty_id": "duty-t-1002-tenant-credential",
+      "tenant_id": "t-1002",
+      "recipient_kind": "tenant",
+      "data_category": "credential",
+      "stage": "listed",
+      "anchor_at": "2026-09-25T10:42:00+08:00",
+      "deadline_hours": 72,
+      "deadline_at": "2026-09-28T10:42:00+08:00",
+      "basis": {"region": "EU", "matched_rule": "EU/credential/listed/tenant"}
+    }
+  },
+  {
+    "event_id": "evt-09-021",
+    "event_type": "scope.resolved",
+    "aggregate_id": "case-09-001",
+    "occurred_at": "2026-09-25T10:50:00+08:00",
+    "actor_id": "reviewer-lead",
+    "payload": {"tenant_id": "t-1003", "included": false, "reviewed_proposal_ids": ["evt-09-013", "evt-09-014"], "exclusion_reason": "stage_below_threshold", "rationale": "复核裁决：US 个人数据仅 listed，未达 received 阈值"}
+  },
+  {
+    "event_id": "evt-09-022",
+    "event_type": "isolation.applied",
+    "aggregate_id": "case-09-001",
+    "occurred_at": "2026-09-25T11:00:00+08:00",
+    "actor_id": "sre-03",
+    "payload": {"action_id": "act-01", "scope_kind": "request_pattern", "pattern": "dump_workspace_and_exfil"}
+  },
+  {
+    "event_id": "evt-09-023",
+    "event_type": "isolation.applied",
+    "aggregate_id": "case-09-001",
+    "occurred_at": "2026-09-25T11:05:00+08:00",
+    "actor_id": "sre-03",
+    "payload": {"action_id": "act-02", "scope_kind": "credential", "credential_version_id": "credv-7720", "action": "rotate"}
+  },
+  {
+    "event_id": "evt-09-024",
+    "event_type": "notification.sent",
+    "aggregate_id": "case-09-001",
+    "occurred_at": "2026-09-25T11:30:00+08:00",
+    "actor_id": "comms-04",
+    "payload": {"duty_id": "duty-t-1002-tenant-credential", "tenant_id": "t-1002", "recipient_kind": "tenant", "data_category": "credential", "channel": "secure_email", "receipt_ref": "mail-55430"}
+  },
+  {
+    "event_id": "evt-09-025",
+    "event_type": "evidence.corrected",
+    "aggregate_id": "case-09-001",
+    "occurred_at": "2026-09-25T15:00:00+08:00",
+    "actor_id": "investigator-b",
+    "payload": {
+      "evidence_id": "ev-req-02b",
+      "corrects_evidence_id": "ev-req-02",
+      "reason": "归因错误：req-7790 来自内部健康检查，凭据字段为静态模板值，非租户凭据",
+      "source_kind": "request_log",
+      "source_ref": "gateway:req-7790:reanalyzed",
+      "content": {"request_id": "req-7790", "source": "internal-healthcheck", "credential_field": "static-template-value"}
+    }
+  },
+  {
+    "event_id": "evt-09-026",
+    "event_type": "finding.recorded",
+    "aggregate_id": "case-09-001",
+    "occurred_at": "2026-09-25T15:10:00+08:00",
+    "actor_id": "investigator-b",
+    "payload": {
+      "finding_id": "f-04",
+      "tenant_id": "t-1002",
+      "region": "EU",
+      "data_category": "credential",
+      "stage": "listed",
+      "request_evidence_id": "ev-req-02b",
+      "credential_version_id": "credv-7720",
+      "supersedes_finding_id": "f-02",
+      "verdict": "false_positive",
+      "summary": "复核认定 f-02 为误报：内部流量与静态模板"
+    }
+  },
+  {
+    "event_id": "evt-09-027",
+    "event_type": "scope.proposed",
+    "aggregate_id": "case-09-001",
+    "occurred_at": "2026-09-25T15:20:00+08:00",
+    "actor_id": "investigator-a",
+    "payload": {"tenant_id": "t-1002", "included": false, "rationale": "f-02 被更正为误报，撤回纳入判断", "finding_ids": ["f-04"]}
+  },
+  {
+    "event_id": "evt-09-028",
+    "event_type": "scope.resolved",
+    "aggregate_id": "case-09-001",
+    "occurred_at": "2026-09-25T15:30:00+08:00",
+    "actor_id": "reviewer-lead",
+    "payload": {"tenant_id": "t-1002", "included": false, "reviewed_proposal_ids": ["evt-09-027"], "exclusion_reason": "corrected_as_false_positive", "rationale": "采信更正证据；已发通知作为事实保留，仅废止尚未发送的义务"}
+  },
+  {
+    "event_id": "evt-09-029",
+    "event_type": "duty.superseded",
+    "aggregate_id": "case-09-001",
+    "occurred_at": "2026-09-25T15:30:10+08:00",
+    "actor_id": "policy-engine",
+    "payload": {"duty_id": "duty-t-1002-authority-credential", "tenant_id": "t-1002", "reason": "scope_excluded:corrected_as_false_positive"}
+  },
+  {
+    "event_id": "evt-09-030",
+    "event_type": "disclosure.prepared",
+    "aggregate_id": "case-09-001",
+    "occurred_at": "2026-09-25T16:00:00+08:00",
+    "actor_id": "legal-08",
+    "payload": {"disclosure_id": "dis-01", "recipient_kind": "authority", "subject": "阶段性事件报告"}
+  },
+  {
+    "event_id": "evt-09-031",
+    "event_type": "disclosure.signed",
+    "aggregate_id": "case-09-001",
+    "occurred_at": "2026-09-25T16:10:00+08:00",
+    "actor_id": "legal-08",
+    "payload": {"disclosure_id": "dis-01", "role": "legal"}
+  },
+  {
+    "event_id": "evt-09-032",
+    "event_type": "disclosure.signed",
+    "aggregate_id": "case-09-001",
+    "occurred_at": "2026-09-25T16:20:00+08:00",
+    "actor_id": "sec-09",
+    "payload": {"disclosure_id": "dis-01", "role": "security"}
+  },
+  {
+    "event_id": "evt-09-033",
+    "event_type": "disclosure.released",
+    "aggregate_id": "case-09-001",
+    "occurred_at": "2026-09-25T16:30:00+08:00",
+    "actor_id": "legal-08",
+    "payload": {"disclosure_id": "dis-01"}
+  },
+  {
+    "event_id": "evt-09-034",
+    "event_type": "incident.contained",
+    "aggregate_id": "case-09-001",
+    "occurred_at": "2026-09-25T17:00:00+08:00",
+    "actor_id": "commander-01",
+    "payload": {"reason": "外发模式已拦截，凭据版本已轮换，待通知队列推进中"}
   }
 ]

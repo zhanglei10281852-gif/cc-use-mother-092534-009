@@ -1,22 +1,68 @@
-[
-  {
-    "code": "P-09-01",
-    "name": "版本绑定",
-    "description": "证据更正只能追加新记录并引用被更正项"
+{
+  "version": 3,
+  "updated_at": "2026-09-01T00:00:00+08:00",
+  "policies": [
+    {
+      "code": "P-09-01",
+      "name": "版本绑定",
+      "description": "证据更正只能追加新记录并引用被更正项，哈希链不可断"
+    },
+    {
+      "code": "P-09-02",
+      "name": "暴露阶段区分",
+      "description": "实际领取与仅生成清单必须区分暴露阶段 listed/packaged/received"
+    },
+    {
+      "code": "P-09-03",
+      "name": "通知矩阵",
+      "description": "通知义务与截止按租户地区、数据类别与实际暴露阶段确定"
+    },
+    {
+      "code": "P-09-04",
+      "name": "双签披露",
+      "description": "对外披露必须完成法务和安全双签，且隐藏其他租户信息"
+    },
+    {
+      "code": "P-09-05",
+      "name": "范围冲突复核",
+      "description": "并发调查员对同一租户范围判断冲突时必须进入复核裁决"
+    },
+    {
+      "code": "P-09-06",
+      "name": "恢复续跑",
+      "description": "监管截止时间锚定绝对时刻，服务恢复后重放继续推进，不重置时钟"
+    }
+  ],
+  "notification_matrix": {
+    "comment": "deadline_hours 为该受影响方范围首次确认后的小时数；null 表示该组合无通知义务",
+    "rules": [
+      {"region": "CN", "data_category": "personal_data", "min_stage": "packaged", "recipient": "authority", "deadline_hours": 72},
+      {"region": "CN", "data_category": "personal_data", "min_stage": "received", "recipient": "tenant", "deadline_hours": 72},
+      {"region": "CN", "data_category": "credential", "min_stage": "listed", "recipient": "tenant", "deadline_hours": 24},
+      {"region": "CN", "data_category": "important_data", "min_stage": "packaged", "recipient": "authority", "deadline_hours": 72},
+      {"region": "EU", "data_category": "personal_data", "min_stage": "packaged", "recipient": "authority", "deadline_hours": 72},
+      {"region": "EU", "data_category": "personal_data", "min_stage": "received", "recipient": "tenant", "deadline_hours": 72},
+      {"region": "EU", "data_category": "credential", "min_stage": "listed", "recipient": "authority", "deadline_hours": 72},
+      {"region": "EU", "data_category": "credential", "min_stage": "listed", "recipient": "tenant", "deadline_hours": 72},
+      {"region": "US", "data_category": "personal_data", "min_stage": "received", "recipient": "tenant", "deadline_hours": 72},
+      {"region": "US", "data_category": "credential", "min_stage": "packaged", "recipient": "tenant", "deadline_hours": 48},
+      {"region": "SG", "data_category": "personal_data", "min_stage": "packaged", "recipient": "authority", "deadline_hours": 72},
+      {"region": "SG", "data_category": "credential", "min_stage": "listed", "recipient": "tenant", "deadline_hours": 24}
+    ],
+    "stage_rank": {"listed": 1, "packaged": 2, "received": 3},
+    "fallback": {"recipient": "authority", "deadline_hours": null}
   },
-  {
-    "code": "P-09-02",
-    "name": "并发边界",
-    "description": "实际领取与仅生成清单必须区分暴露阶段"
+  "scope_rules": {
+    "in_scope_when": "存在与该租户关联的暴露结论，且最高暴露阶段达到或超过所匹配通知矩阵规则的 min_stage；凭据类风险按关联凭据版本计入",
+    "exclusion_reasons": [
+      "no_evidence",
+      "stage_below_threshold",
+      "corrected_as_false_positive",
+      "duplicate_import"
+    ]
   },
-  {
-    "code": "P-09-03",
-    "name": "恢复约束",
-    "description": "通知截止按租户地区与数据类别确定"
-  },
-  {
-    "code": "P-09-04",
-    "name": "审计结果",
-    "description": "对外披露必须完成法务和安全双签"
+  "containment_rules": {
+    "global_disruption_requires_approval": true,
+    "default_action_scope": "suspected_request_pattern_or_single_tenant"
   }
-]
+}

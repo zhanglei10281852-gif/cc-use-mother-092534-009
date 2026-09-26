@@ -5,8 +5,11 @@
     "evidence_item",
     "custody_entry",
     "exposure_finding",
+    "scope_proposal",
     "affected_party",
+    "credential_version",
     "notification_duty",
+    "isolation_action",
     "disclosure"
   ],
   "states": [
@@ -21,21 +24,65 @@
   ],
   "event_types": [
     "incident.opened",
+    "incident.contained",
+    "incident.closed",
+    "incident.reopened",
     "evidence.preserved",
+    "evidence.corrected",
+    "evidence.import_rejected",
     "finding.recorded",
+    "scope.proposed",
     "scope.contested",
-    "scope.approved",
+    "scope.resolved",
     "duty.calculated",
+    "duty.superseded",
     "notification.sent",
-    "incident.closed"
+    "isolation.applied",
+    "disclosure.prepared",
+    "disclosure.signed",
+    "disclosure.released"
+  ],
+  "exposure_stages": [
+    "listed",
+    "packaged",
+    "received"
+  ],
+  "data_categories": [
+    "personal_data",
+    "credential",
+    "important_data",
+    "general_data"
+  ],
+  "recipient_kinds": [
+    "authority",
+    "tenant"
+  ],
+  "sign_roles": [
+    "legal",
+    "security"
+  ],
+  "party_statuses": [
+    "collecting",
+    "proposed",
+    "contested",
+    "in_scope",
+    "out_of_scope"
   ],
   "time_policy": "ISO 8601 with timezone",
-  "identifier_policy": "同一租户和对象类型内业务标识唯一",
-  "version_policy": "已发布规则与事实通过新版本追加，不覆盖历史",
+  "identifier_policy": "同一租户和对象类型内业务标识唯一；证据以来源标识与内容指纹双重去重",
+  "version_policy": "已发布规则与事实通过新版本追加，不覆盖历史；事件日志与监管截止时间均为绝对时间，重启后重放继续",
+  "deadline_anchor_policy": "通知截止时间锚定该受影响方范围首次确认时刻，后续结论变化不重置监管时钟",
   "rules": [
-    "证据更正只能追加新记录并引用被更正项",
-    "实际领取与仅生成清单必须区分暴露阶段",
-    "通知截止按租户地区与数据类别确定",
-    "对外披露必须完成法务和安全双签"
+    "证据进入保全后只能追加更正记录并引用被更正项，哈希链全程可校验，原记录不可变",
+    "必须区分文件仅被列出 listed、被打包 packaged、被实际领取 received 三个暴露阶段",
+    "可疑请求、清单摘要、交付回执、受影响租户与凭据版本通过调查结论相互关联",
+    "同一证据重复导入幂等，拒绝事件留痕但不增加证据与受影响方计数",
+    "并发调查员对同一租户范围作出冲突判断时自动进入复核，由复核人裁决",
+    "通知义务按租户地区、数据类别与实际暴露阶段匹配策略矩阵，生成绝对截止时间",
+    "调查结论变化时只重估尚未发送的通知；已发送通知作为确认事实不撤回不覆盖",
+    "对外披露必须由法务与安全两名不同责任人双签，发布包隐藏其他租户的任何信息",
+    "隔离与凭据处置默认限定作用域，默认拒绝影响全部租户的中断性动作",
+    "服务恢复后通过事件重放继续推进监管时钟、隔离动作与待通知队列",
+    "管理接口必须能解释每名受影响方被纳入或排除的证据、策略与裁决依据"
   ]
 }
