@@ -4,41 +4,76 @@
     "event_type": "incident.opened",
     "aggregate_id": "case-09-001",
     "occurred_at": "2026-09-25T09:00:00+08:00",
-    "actor_id": "operator-01"
+    "actor_id": "commander-01"
   },
   {
     "event_id": "evt-09-002",
     "event_type": "evidence.preserved",
     "aggregate_id": "case-09-001",
-    "occurred_at": "2026-09-25T10:00:00+08:00",
-    "actor_id": "reviewer-02"
+    "occurred_at": "2026-09-25T09:40:00+08:00",
+    "actor_id": "analyst-01"
   },
   {
     "event_id": "evt-09-003",
     "event_type": "finding.recorded",
     "aggregate_id": "case-09-001",
-    "occurred_at": "2026-09-25T11:00:00+08:00",
-    "actor_id": "operator-01"
+    "occurred_at": "2026-09-25T10:30:00+08:00",
+    "actor_id": "analyst-01"
   },
   {
     "event_id": "evt-09-004",
-    "event_type": "scope.contested",
+    "event_type": "scope.judged",
     "aggregate_id": "case-09-001",
-    "occurred_at": "2026-09-25T12:00:00+08:00",
-    "actor_id": "reviewer-02"
+    "occurred_at": "2026-09-25T11:00:00+08:00",
+    "actor_id": "inv-01"
   },
   {
     "event_id": "evt-09-005",
-    "event_type": "scope.approved",
+    "event_type": "scope.contested",
     "aggregate_id": "case-09-001",
-    "occurred_at": "2026-09-25T13:00:00+08:00",
-    "actor_id": "operator-01"
+    "occurred_at": "2026-09-25T12:00:00+08:00",
+    "actor_id": "inv-02"
   },
   {
     "event_id": "evt-09-006",
-    "event_type": "duty.calculated",
+    "event_type": "scope.resolved",
     "aggregate_id": "case-09-001",
-    "occurred_at": "2026-09-25T14:00:00+08:00",
-    "actor_id": "reviewer-02"
+    "occurred_at": "2026-09-25T13:00:00+08:00",
+    "actor_id": "commander-01"
+  },
+  {
+    "event_id": "evt-09-007",
+    "event_type": "duty.generated",
+    "aggregate_id": "case-09-001",
+    "occurred_at": "2026-09-25T13:05:00+08:00",
+    "actor_id": "system"
+  },
+  {
+    "event_id": "evt-09-008",
+    "event_type": "containment.applied",
+    "aggregate_id": "case-09-001",
+    "occurred_at": "2026-09-25T13:20:00+08:00",
+    "actor_id": "sre-01"
+  },
+  {
+    "event_id": "evt-09-009",
+    "event_type": "disclosure.signed",
+    "aggregate_id": "case-09-001",
+    "occurred_at": "2026-09-25T15:00:00+08:00",
+    "actor_id": "legal-01"
+  },
+  {
+    "event_id": "evt-09-010",
+    "event_type": "disclosure.signed",
+    "aggregate_id": "case-09-001",
+    "occurred_at": "2026-09-25T15:30:00+08:00",
+    "actor_id": "sec-01"
+  },
+  {
+    "event_id": "evt-09-011",
+    "event_type": "notification.sent",
+    "aggregate_id": "case-09-001",
+    "occurred_at": "2026-09-26T10:00:00+08:00",
+    "actor_id": "legal-ops"
   }
 ]

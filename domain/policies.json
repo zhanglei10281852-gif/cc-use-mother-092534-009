@@ -2,21 +2,37 @@
   {
     "code": "P-09-01",
     "name": "版本绑定",
-    "description": "证据更正只能追加新记录并引用被更正项"
+    "description": "证据更正只能追加新记录并引用被更正项；所有事实进入前序哈希链",
+    "implemented_by": "incident_vault.store.EventStore.append / IncidentEngine.correct_evidence"
   },
   {
     "code": "P-09-02",
     "name": "并发边界",
-    "description": "实际领取与仅生成清单必须区分暴露阶段"
+    "description": "实际领取、打包与仅生成清单必须区分暴露阶段；并发调查员冲突判断进入复核",
+    "implemented_by": "incident_vault.models.Stage / IncidentEngine.judge_scope"
   },
   {
     "code": "P-09-03",
     "name": "恢复约束",
-    "description": "通知截止按租户地区与数据类别确定"
+    "description": "通知截止按租户地区与数据类别确定；服务恢复后时钟、隔离与队列继续推进",
+    "implemented_by": "incident_vault.policy.PolicyEngine / EventStore._rebuild"
   },
   {
     "code": "P-09-04",
     "name": "审计结果",
-    "description": "对外披露必须完成法务和安全双签"
+    "description": "对外披露必须完成法务和安全双签，并隐去范围外租户信息",
+    "implemented_by": "IncidentEngine.sign_disclosure / issue_disclosure"
+  },
+  {
+    "code": "P-09-05",
+    "name": "去重计数",
+    "description": "重复导入同一证据不得扩大战果计数",
+    "implemented_by": "EventStore.projection.evidence_fingerprints"
+  },
+  {
+    "code": "P-09-06",
+    "name": "最小中断",
+    "description": "隔离默认定向到具体租户；全局隔离须事件指挥官授权并记录理由",
+    "implemented_by": "IncidentEngine.apply_containment"
   }
 ]

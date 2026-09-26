@@ -1,7 +1,7 @@
 [project]
 name = "ccusr-incident-vault"
 version = "0.1.0"
-description = "安全事件范围、证据保全、租户通知、监管时钟与处置复核的领域资料"
+description = "智能体泄露事件证据保全与处置系统：范围认定、证据链、通知时钟、双签披露与恢复"
 requires-python = ">=3.11"
 dependencies = []
 
